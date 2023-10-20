@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location and Photo Sharing</title>
+</head>
+<body>
+    <h1>Share Your Location and Photos</h1>
+
+    <button id="getLocation">Get My Location</button>
+    <p id="location"></p>
+
+    <input type="file" accept="image/*" id="uploadPhoto" onchange="previewPhoto()">
+    <img id="photoPreview" src="#" alt="Uploaded Photo" style="display: none;">
+
+    <script>
+        // Get location
+        document.getElementById('getLocation').addEventListener('click', function () {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    document.getElementById('location').textContent = "Latitude: " + latitude + ", Longitude: " + longitude;
+                });
+            } else {
+                document.getElementById('location').textContent = "Geolocation is not available in your browser.";
+            }
+        });
+
+        // Preview uploaded photo
+        function previewPhoto() {
+            var photoInput = document.getElementById('uploadPhoto');
+            var photoPreview = document.getElementById('photoPreview');
+
+            if (photoInput.files && photoInput.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    photoPreview.src = e.target.result;
+                    photoPreview.style.display = 'block';
+                };
+
+                reader.readAsDataURL(photoInput.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
